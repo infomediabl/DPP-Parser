@@ -123,6 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
         topAdsGrid.innerHTML = '';
 
         ads.forEach(ad => {
+            console.log('Processing ad:', ad);
+            
             const adCard = document.createElement('div');
             adCard.className = 'ad-card';
 
@@ -130,49 +132,58 @@ document.addEventListener('DOMContentLoaded', function() {
             let mediaContent = '';
             const snapshot = ad.originalItem.snapshot;
             
-            // Find the image URL from either location
-            let imageUrl = null;
-            
-            // Check in cards first
-            if (snapshot?.cards?.[0]?.original_image_url) {
-                imageUrl = snapshot.cards[0].original_image_url;
+            // Check for image in snapshot.body.cards
+            if (snapshot?.body?.cards?.[0]?.original_image_url) {
+                mediaContent = `<img src="${snapshot.body.cards[0].original_image_url}" alt="Ad Image">`;
             } 
-            // Check in images if not found in cards
-            else if (snapshot?.images?.original_image_url) {
-                imageUrl = snapshot.images.original_image_url;
+            // Check for image in snapshot.images
+            else if (snapshot?.images?.[0]?.original_image_url) {
+                mediaContent = `<img src="${snapshot.images[0].original_image_url}" alt="Ad Image">`;
             }
-            
-            // Create image content if URL exists
-            if (imageUrl) {
-                mediaContent = `<img src="${imageUrl}" alt="Ad Image">`;
-            } 
-            // Check for HD video in cards if no image found
-            else if (snapshot?.cards?.[0]?.video_hd_url) {
-                mediaContent = `<video controls><source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+            // Check for video in snapshot.body.cards
+            else if (snapshot?.body?.cards?.[0]?.video_hd_url) {
+                mediaContent = `<video controls><source src="${snapshot.body.cards[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
+            }
+            // Check for video in snapshot.videos
+            else if (snapshot?.videos?.[0]?.video_hd_url) {
+                mediaContent = `<video controls><source src="${snapshot.videos[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
             }
 
-            // Create image section HTML
-            const imageSection = imageUrl 
-                ? `<div class="original-image"><a href="${imageUrl}" target="_blank"><img src="${imageUrl}" alt="Original Ad Image"></a></div>` 
-                : '';
+            // Get original image URL if it exists (checking both locations)
+            const originalImage = snapshot?.body?.cards?.[0]?.original_image_url 
+                ? `<div class="original-image"><a href="${snapshot.body.cards[0].original_image_url}" target="_blank"><img src="${snapshot.body.cards[0].original_image_url}" alt="Original Ad Image"></a></div>`
+                : snapshot?.images?.[0]?.original_image_url
+                    ? `<div class="original-image"><a href="${snapshot.images[0].original_image_url}" target="_blank"><img src="${snapshot.images[0].original_image_url}" alt="Original Ad Image"></a></div>`
+                    : '';
 
-            // Create video section HTML
-            const videoSection = snapshot?.cards?.[0]?.video_hd_url 
+            // Get video HD URL if it exists (checking both locations)
+            const videoHD = snapshot?.body?.cards?.[0]?.video_hd_url 
                 ? `<div class="video-hd">
                     <video controls>
-                        <source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">
+                        <source src="${snapshot.body.cards[0].video_hd_url}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
-                    <a href="${snapshot.cards[0].video_hd_url}" target="_blank" class="video-link">Download HD Video</a>
+                    <a href="${snapshot.body.cards[0].video_hd_url}" target="_blank" class="video-link">Download HD Video</a>
                    </div>`
-                : '';
+                : snapshot?.videos?.[0]?.video_hd_url
+                    ? `<div class="video-hd">
+                        <video controls>
+                            <source src="${snapshot.videos[0].video_hd_url}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <a href="${snapshot.videos[0].video_hd_url}" target="_blank" class="video-link">Download HD Video</a>
+                       </div>`
+                    : '';
+
+            // Get ad text from body
+            const adText = snapshot?.body?.text || '-';
 
             adCard.innerHTML = `
-                ${imageSection}
+                ${originalImage}
                 <h3>Ad ID: ${ad.adId}</h3>
-                ${videoSection}
+                ${videoHD}
                 <div class="ad-content">
-                    <p><strong>Ad Text:</strong> ${ad.adText}</p>
+                    <p><strong>Ad Text:</strong> ${adText}</p>
                     <p><strong>Card Titles:</strong> ${ad.cardTitles}</p>
                     <p><strong>Card Bodies:</strong> ${ad.cardBodies}</p>
                 </div>
@@ -295,4 +306,4 @@ document.addEventListener('DOMContentLoaded', function() {
             tableBody.appendChild(tr);
         });
     }
-});
+}); 
