@@ -128,21 +128,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Get media content (image or video)
             let mediaContent = '';
+            let originalImageUrl = null;
             const snapshot = ad.originalItem.snapshot;
             
-            // Check for original image in cards
+         // Check in cards first
             if (snapshot?.cards?.[0]?.original_image_url) {
-                mediaContent = `<img src="${snapshot.cards[0].original_image_url}" alt="Ad Image">`;
-            } 
+                originalImageUrl = snapshot.cards[0].original_image_url;
+            }
+
+            // Check in images if not found in cards
+                else if(snapshot?.images?.original_image_url) {
+                    originalImageUrl = snapshot.images.original_image_url;
+            }
+
+            if (originalImageUrl) {
+                    mediaContent = `<img src="${originalImageUrl}" alt="Ad Image">`;
+            }
+                
             // Check for HD video in cards
             else if (snapshot?.cards?.[0]?.video_hd_url) {
                 mediaContent = `<video controls><source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
             }
 
-            // Get original image URL if it exists
-            const originalImage = snapshot?.cards?.[0]?.original_image_url 
-                ? `<div class="original-image"><a href="${snapshot.cards[0].original_image_url}" target="_blank"><img src="${snapshot.cards[0].original_image_url}" alt="Original Ad Image"></a></div>`
-                : '';
 
             // Get video HD URL if it exists
             const videoHD = snapshot?.cards?.[0]?.video_hd_url 
