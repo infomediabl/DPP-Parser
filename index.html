@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertiser Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .container.full-width {
+            max-width: 100%;
+            padding: 20px;
+        }
+        .two-column-layout {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .form-column {
+            flex: 1;
+            min-width: 300px;
+        }
+        .table-column {
+            flex: 2;
+            min-width: 500px;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        #advertisersTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #advertisersTable th,
+        #advertisersTable td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        #advertisersTable th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+        #advertisersTable tr:hover {
+            background-color: #f9f9f9;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-edit {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .two-column-layout {
+                flex-direction: column;
+            }
+            .form-column,
+            .table-column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container full-width">
+        <header>
+            <h1>Advertiser Management</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Add Advertiser</a></li>
+                    <li><a href="pages/facebook-ads-parser.html">Facebook Parser</a></li>
+                    <li><a href="pages/google-ads-parser.html">Google Parser</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="two-column-layout">
+            <!-- Left Column - Form -->
+            <div class="form-column">
+                <h2>Add New Advertiser</h2>
+                <form id="advertiserForm" class="advertiser-form">
+                    <div class="form-group">
+                        <label for="advertiserName">Advertiser Name:</label>
+                        <input type="text" id="advertiserName" name="advertiserName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fbAdUrl">Facebook Ad URL:</label>
+                        <input type="url" id="fbAdUrl" name="fbAdUrl" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="googleAdUrl">Google Ad URL:</label>
+                        <input type="url" id="googleAdUrl" name="googleAdUrl" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mainCountry">Main Country:</label>
+                        <select id="mainCountry" name="mainCountry" required>
+                            <option value="">Select a country</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="PL">Poland</option>
+                            <option value="RO">Romania</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="BE">Belgium</option>
+                            <option value="SE">Sweden</option>
+                            <option value="PT">Portugal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mainPlacement">Main Placement:</label>
+                        <select id="mainPlacement" name="mainPlacement" required>
+                            <option value="">Select placement</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="google">Google</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Save Advertiser</button>
+                        <button type="reset" class="btn btn-secondary">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Right Column - Table -->
+            <div class="table-column">
+                <h2>Saved Advertisers</h2>
+                <div class="table-container">
+                    <table id="advertisersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Country</th>
+                                <th>Placement</th>
+                                <th>Facebook</th>
+                                <th>Google</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="advertisersTableBody">
+                            <!-- Table rows will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html> 
