@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Ads - Advertiser Management</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/display-ads.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Display Ads</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Add Advertiser</a></li>
+                    <li><a href="display-ads.html" class="active">Display Ads</a></li>
+                    <li><a href="log.html">Log Page</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Filters Section -->
+            <section class="filters-section">
+                <h2>Filter Ads</h2>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="advertiserFilter">Advertiser:</label>
+                        <select id="advertiserFilter">
+                            <option value="">All Advertisers</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="countryFilter">Country:</label>
+                        <select id="countryFilter">
+                            <option value="">All Countries</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="ES">Spain</option>
+                            <option value="PL">Poland</option>
+                            <option value="RO">Romania</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="BE">Belgium</option>
+                            <option value="SE">Sweden</option>
+                            <option value="PT">Portugal</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="placementFilter">Placement:</label>
+                        <select id="placementFilter">
+                            <option value="">All Placements</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="google">Google</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="mediaTypeFilter">Media Type:</label>
+                        <select id="mediaTypeFilter">
+                            <option value="">All Types</option>
+                            <option value="image">Image</option>
+                            <option value="video">Video</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ads Display Section -->
+            <section class="ads-section">
+                <div class="ads-grid" id="adsGrid">
+                    <!-- Placeholder ads will be added by JavaScript -->
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../js/display-ads.js"></script>
+</body>
+</html> 
