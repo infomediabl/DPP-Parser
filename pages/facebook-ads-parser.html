@@ -15,10 +15,10 @@
             padding: 20px;
         }
         .upload-section {
-            margin-bottom: 20px;
+            margin: 20px;
             padding: 20px;
             background-color: #f5f5f5;
-            border-radius: 4px;
+            border-radius: 5px;
         }
         .table-container {
             overflow-x: auto;
@@ -188,6 +188,57 @@
                 grid-template-columns: 1fr;
             }
         }
+        .file-info {
+            margin: 10px 0;
+            color: #666;
+        }
+        /* JSON Display Section */
+        #jsonDisplaySection {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .json-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        #copyJsonBtn {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        #copyJsonBtn:hover {
+            background-color: #45a049;
+        }
+        #copyJsonBtn:active {
+            background-color: #3d8b40;
+        }
+        #jsonDisplay {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            max-height: 500px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+        }
+        .section-title {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.5em;
+        }
     </style>
 </head>
 <body>
@@ -214,13 +265,13 @@
                             <span>Choose JSON File</span>
                         </label>
                     </div>
-                    <div id="fileName" class="file-name"></div>
+                    <div id="fileName" class="file-info"></div>
                 </div>
             </section>
 
             <!-- Top 20 Ads Section -->
             <section class="top-ads-section" id="topAdsSection" style="display: none;">
-                <h2>Top 20 Ads by Duration</h2>
+                <h2>Top 50 Ads by Duration</h2>
                 <div class="top-ads-grid" id="topAdsGrid">
                     <!-- Top ads will be populated here -->
                 </div>
@@ -251,6 +302,7 @@
                                 <th>Description</th>
                                 <th>CTA Text</th>
                                 <th>Platform</th>
+                                <th>Snapshot Link</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -258,6 +310,15 @@
                         </tbody>
                     </table>
                 </div>
+            </section>
+
+            <!-- JSON Display Section -->
+            <section id="jsonDisplaySection" style="display: none;">
+                <div class="json-header">
+                    <h2 class="section-title">Top 50 Ads JSON Data</h2>
+                    <button id="copyJsonBtn">Copy JSON</button>
+                </div>
+                <div id="jsonDisplay"></div>
             </section>
         </main>
     </div>
