@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Parser - Advertiser Management</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/json-parser.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JSON Parser</h1>
+            <nav>
+                <ul>
+                    <li><a href="../index.html">Add Advertiser</a></li>
+                    <li><a href="display-ads.html">Display Ads</a></li>
+                    <li><a href="log.html">Log Page</a></li>
+                    <li><a href="json-parser.html" class="active">JSON Parser</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <h2>Upload JSON File</h2>
+                <div class="upload-container">
+                    <div class="file-input-wrapper">
+                        <input type="file" id="jsonFileInput" accept=".json" class="file-input">
+                        <label for="jsonFileInput" class="file-label">
+                            <span>Choose JSON File</span>
+                        </label>
+                    </div>
+                    <div id="fileName" class="file-name"></div>
+                </div>
+            </section>
+
+            <!-- Table Section -->
+            <section class="table-section">
+                <div class="table-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search in table...">
+                    </div>
+                    <div class="table-info">
+                        <span id="rowCount">0 rows</span>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="jsonTable" class="display responsive nowrap" style="width:100%">
+                        <thead>
+                            <tr id="headerRow">
+                                <!-- Headers will be populated by JavaScript -->
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="../js/json-parser.js"></script>
+</body>
+</html> 
