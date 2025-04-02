@@ -130,33 +130,34 @@ document.addEventListener('DOMContentLoaded', function() {
             let mediaContent = '';
             const snapshot = ad.originalItem.snapshot;
             
-            // Check for original image in both locations
-            let originalImageUrl = null;
+            // Find the image URL from either location
+            let imageUrl = null;
             
             // Check in cards first
             if (snapshot?.cards?.[0]?.original_image_url) {
-                originalImageUrl = snapshot.cards[0].original_image_url;
-            }
+                imageUrl = snapshot.cards[0].original_image_url;
+            } 
             // Check in images if not found in cards
             else if (snapshot?.images?.original_image_url) {
-                originalImageUrl = snapshot.images.original_image_url;
+                imageUrl = snapshot.images.original_image_url;
             }
             
-            if (originalImageUrl) {
-                mediaContent = `<img src="${originalImageUrl}" alt="Ad Image">`;
-            }
+            // Create image content if URL exists
+            if (imageUrl) {
+                mediaContent = `<img src="${imageUrl}" alt="Ad Image">`;
+            } 
             // Check for HD video in cards if no image found
             else if (snapshot?.cards?.[0]?.video_hd_url) {
                 mediaContent = `<video controls><source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
             }
 
-            // Create the original image HTML if the URL exists (from either location)
-            const originalImageHtml = originalImageUrl 
-                ? `<div class="original-image"><a href="${originalImageUrl}" target="_blank"><img src="${originalImageUrl}" alt="Original Ad Image"></a></div>`
+            // Create image section HTML
+            const imageSection = imageUrl 
+                ? `<div class="original-image"><a href="${imageUrl}" target="_blank"><img src="${imageUrl}" alt="Original Ad Image"></a></div>` 
                 : '';
 
-            // Get video HD URL if it exists
-            const videoHD = snapshot?.cards?.[0]?.video_hd_url 
+            // Create video section HTML
+            const videoSection = snapshot?.cards?.[0]?.video_hd_url 
                 ? `<div class="video-hd">
                     <video controls>
                         <source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">
@@ -167,9 +168,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 : '';
 
             adCard.innerHTML = `
-                ${originalImageHtml}
+                ${imageSection}
                 <h3>Ad ID: ${ad.adId}</h3>
-                ${videoHD}
+                ${videoSection}
                 <div class="ad-content">
                     <p><strong>Ad Text:</strong> ${ad.adText}</p>
                     <p><strong>Card Titles:</strong> ${ad.cardTitles}</p>
