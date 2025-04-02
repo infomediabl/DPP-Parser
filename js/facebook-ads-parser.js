@@ -128,36 +128,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Get media content (image or video)
             let mediaContent = '';
+            let imageUrl = '';
             const snapshot = ad.originalItem.snapshot;
             
-            // Find the image URL from either location
-            let imageUrl = null;
-            
-            // Check in cards first
+            // Check for original image in cards
             if (snapshot?.cards?.[0]?.original_image_url) {
                 imageUrl = snapshot.cards[0].original_image_url;
-            } 
+            }
             // Check in images if not found in cards
             else if (snapshot?.images?.original_image_url) {
                 imageUrl = snapshot.images.original_image_url;
             }
             
-            // Create image content if URL exists
             if (imageUrl) {
                 mediaContent = `<img src="${imageUrl}" alt="Ad Image">`;
-            } 
+            }
             // Check for HD video in cards if no image found
             else if (snapshot?.cards?.[0]?.video_hd_url) {
                 mediaContent = `<video controls><source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
             }
 
-            // Create image section HTML
-            const imageSection = imageUrl 
-                ? `<div class="original-image"><a href="${imageUrl}" target="_blank"><img src="${imageUrl}" alt="Original Ad Image"></a></div>` 
+            // Create the original image container if URL exists
+            const imageHtml = imageUrl 
+                ? `<div class="original-image"><a href="${imageUrl}" target="_blank"><img src="${imageUrl}" alt="Original Ad Image"></a></div>`
                 : '';
 
-            // Create video section HTML
-            const videoSection = snapshot?.cards?.[0]?.video_hd_url 
+            // Create video container if URL exists
+            const videoHtml = snapshot?.cards?.[0]?.video_hd_url 
                 ? `<div class="video-hd">
                     <video controls>
                         <source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">
@@ -168,9 +165,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 : '';
 
             adCard.innerHTML = `
-                ${imageSection}
+                ${imageHtml}
                 <h3>Ad ID: ${ad.adId}</h3>
-                ${videoSection}
+                ${videoHtml}
                 <div class="ad-content">
                     <p><strong>Ad Text:</strong> ${ad.adText}</p>
                     <p><strong>Card Titles:</strong> ${ad.cardTitles}</p>
