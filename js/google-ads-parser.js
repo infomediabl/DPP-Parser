@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileName = document.getElementById('fileName');
     const tableBody = document.querySelector('#jsonTable tbody');
     const tableHeaders = document.querySelectorAll('#jsonTable th');
-    const downloadButton = document.getElementById('downloadCSV');
     const topAdsSection = document.getElementById('topAdsSection');
     const topAdsGrid = document.getElementById('topAdsGrid');
+    const copyJsonBtn = document.getElementById('copyJsonBtn');
     let currentData = [];
     let currentSort = { column: null, direction: 'asc' };
     
@@ -15,6 +15,28 @@ document.addEventListener('DOMContentLoaded', function() {
         header.addEventListener('click', () => {
             sortTable(index);
         });
+    });
+
+    // Add copy functionality
+    copyJsonBtn.addEventListener('click', async function() {
+        const jsonDisplay = document.getElementById('jsonDisplay');
+        try {
+            await navigator.clipboard.writeText(jsonDisplay.textContent);
+            
+            // Visual feedback
+            const originalText = this.textContent;
+            this.textContent = 'Copied!';
+            this.style.backgroundColor = '#45a049';
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                this.textContent = originalText;
+                this.style.backgroundColor = '#4CAF50';
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            alert('Failed to copy to clipboard');
+        }
     });
 
     // Sort table function
@@ -80,6 +102,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Utility function to shorten platform names
+    function shortenPlatform(platform) {
+        const platformMap = {
+            'FACEBOOK': 'FB',
+            'INSTAGRAM': 'IG',
+            'MESSENGER': 'MSG',
+            'WHATSAPP': 'WA',
+            'AUDIENCE_NETWORK': 'AN',
+            'GOOGLE': 'GG',
+            'GOOGLE_SEARCH': 'G Search',
+            'SEARCH_PARTNERS': 'Search P',
+            'DISPLAY': 'Display',
+            'YOUTUBE': 'YT',
+            'GMAIL': 'Gmail',
+            'DISCOVERY': 'Discov',
+            'SHOPPING': 'Shop',
+            'PERFORMANCE_MAX': 'Perf Max'
+        };
+
+        // If platform is an array, map each item
+        if (Array.isArray(platform)) {
+            return platform.map(p => platformMap[p.toUpperCase()] || p).join(', ');
+        }
+
+        // If platform is a string
+        return platformMap[platform.toUpperCase()] || platform;
+    }
+
+    // Utility function to convert country names to ISO codes
+    function convertToCountryCodes(countries) {
+        const countryMap = {
+            'AFGHANISTAN': 'AF', 'ALBANIA': 'AL', 'ALGERIA': 'DZ', 'ANDORRA': 'AD', 'ANGOLA': 'AO',
+            'ARGENTINA': 'AR', 'ARMENIA': 'AM', 'AUSTRALIA': 'AU', 'AUSTRIA': 'AT', 'AZERBAIJAN': 'AZ',
+            'BAHRAIN': 'BH', 'BANGLADESH': 'BD', 'BELARUS': 'BY', 'BELGIUM': 'BE', 'BELIZE': 'BZ',
+            'BENIN': 'BJ', 'BHUTAN': 'BT', 'BOLIVIA': 'BO', 'BOSNIA': 'BA', 'BRAZIL': 'BR',
+            'BULGARIA': 'BG', 'CAMBODIA': 'KH', 'CAMEROON': 'CM', 'CANADA': 'CA', 'CHILE': 'CL',
+            'CHINA': 'CN', 'COLOMBIA': 'CO', 'CONGO': 'CG', 'COSTA RICA': 'CR', 'CROATIA': 'HR',
+            'CUBA': 'CU', 'CYPRUS': 'CY', 'CZECH REPUBLIC': 'CZ', 'DENMARK': 'DK', 'ECUADOR': 'EC',
+            'EGYPT': 'EG', 'ESTONIA': 'EE', 'ETHIOPIA': 'ET', 'FIJI': 'FJ', 'FINLAND': 'FI',
+            'FRANCE': 'FR', 'GEORGIA': 'GE', 'GERMANY': 'DE', 'GHANA': 'GH', 'GREECE': 'GR',
+            'GUATEMALA': 'GT', 'HAITI': 'HT', 'HONDURAS': 'HN', 'HONG KONG': 'HK', 'HUNGARY': 'HU',
+            'ICELAND': 'IS', 'INDIA': 'IN', 'INDONESIA': 'ID', 'IRAN': 'IR', 'IRAQ': 'IQ',
+            'IRELAND': 'IE', 'ISRAEL': 'IL', 'ITALY': 'IT', 'JAMAICA': 'JM', 'JAPAN': 'JP',
+            'JORDAN': 'JO', 'KAZAKHSTAN': 'KZ', 'KENYA': 'KE', 'KUWAIT': 'KW', 'LATVIA': 'LV',
+            'LEBANON': 'LB', 'LIBYA': 'LY', 'LIECHTENSTEIN': 'LI', 'LITHUANIA': 'LT', 'LUXEMBOURG': 'LU',
+            'MACEDONIA': 'MK', 'MADAGASCAR': 'MG', 'MALAYSIA': 'MY', 'MALDIVES': 'MV', 'MALTA': 'MT',
+            'MEXICO': 'MX', 'MOLDOVA': 'MD', 'MONACO': 'MC', 'MONGOLIA': 'MN', 'MONTENEGRO': 'ME',
+            'MOROCCO': 'MA', 'MYANMAR': 'MM', 'NEPAL': 'NP', 'NETHERLANDS': 'NL', 'NEW ZEALAND': 'NZ',
+            'NICARAGUA': 'NI', 'NIGERIA': 'NG', 'NORTH KOREA': 'KP', 'NORWAY': 'NO', 'OMAN': 'OM',
+            'PAKISTAN': 'PK', 'PANAMA': 'PA', 'PARAGUAY': 'PY', 'PERU': 'PE', 'PHILIPPINES': 'PH',
+            'POLAND': 'PL', 'PORTUGAL': 'PT', 'QATAR': 'QA', 'ROMANIA': 'RO', 'RUSSIA': 'RU',
+            'SAUDI ARABIA': 'SA', 'SENEGAL': 'SN', 'SERBIA': 'RS', 'SINGAPORE': 'SG', 'SLOVAKIA': 'SK',
+            'SLOVENIA': 'SI', 'SOUTH AFRICA': 'ZA', 'SOUTH KOREA': 'KR', 'SPAIN': 'ES', 'SRI LANKA': 'LK',
+            'SWEDEN': 'SE', 'SWITZERLAND': 'CH', 'SYRIA': 'SY', 'TAIWAN': 'TW', 'TAJIKISTAN': 'TJ',
+            'THAILAND': 'TH', 'TUNISIA': 'TN', 'TURKEY': 'TR', 'TURKMENISTAN': 'TM', 'UKRAINE': 'UA',
+            'UNITED ARAB EMIRATES': 'AE', 'UNITED KINGDOM': 'GB', 'UNITED STATES': 'US', 'URUGUAY': 'UY',
+            'UZBEKISTAN': 'UZ', 'VATICAN CITY': 'VA', 'VENEZUELA': 'VE', 'VIETNAM': 'VN', 'YEMEN': 'YE',
+            'ZAMBIA': 'ZM', 'ZIMBABWE': 'ZW'
+        };
+
+        // If countries is an array, map each item
+        if (Array.isArray(countries)) {
+            return countries.map(country => {
+                const upperCountry = country.toUpperCase();
+                return countryMap[upperCountry] || country;
+            }).join(', ');
+        }
+
+        // If countries is a string
+        const upperCountry = countries.toUpperCase();
+        return countryMap[upperCountry] || countries;
+    }
+
     // Handle file upload
     jsonFileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -174,12 +269,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         lastShown: formatDate(lastShown),
                         duration: parseInt(duration) || 0,
                         impressions: `${impressions.lowerBound}-${impressions.upperBound}`,
-                        platforms: Array.from(platforms).join(', ') || '-',
+                        platforms: Array.from(platforms).map(shortenPlatform).join(', ') || '-',
                         cta: cta,
                         description: description,
                         previewUrl: previewUrl,
                         headlines: headlines.length > 0 ? `#${headlines.join('#')}#` : '-',
-                        regions: (item.creativeRegions || []).join(', ') || '-',
+                        regions: (item.creativeRegions || []).map(convertToCountryCodes).join(', ') || '-',
                         // Store original item for top ads display
                         originalItem: item
                     };
@@ -189,19 +284,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 console.log('Processed data:', currentData);
 
-                // Sort by duration and get top 20
+                // Sort by duration and get top 50
                 const topAds = [...currentData]
                     .sort((a, b) => b.duration - a.duration)
-                    .slice(0, 20);
+                    .slice(0, 50);
 
-                console.log('Top 20 ads:', topAds);
+                console.log('Top 50 ads:', topAds);
 
-                // Display top 20 ads
+                // Display top 50 ads
                 displayTopAds(topAds);
 
                 // Initial table display
                 updateTableDisplay();
-                downloadButton.disabled = false;
 
             } catch (error) {
                 console.error('Error:', error);
@@ -211,11 +305,12 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsText(file);
     });
 
-    // Display top 20 ads
+    // Display top 50 ads
     function displayTopAds(ads) {
         topAdsSection.style.display = 'block';
         topAdsGrid.innerHTML = '';
 
+        // Display the grid cards
         ads.forEach(ad => {
             console.log('Displaying ad:', ad);
             
@@ -271,36 +366,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
             topAdsGrid.appendChild(adCard);
         });
-    }
 
-    // Download CSV functionality
-    downloadButton.addEventListener('click', function() {
-        if (!currentData.length) return;
-
-        // Get headers from table
-        const headers = Array.from(document.querySelectorAll('#jsonTable th')).map(th => th.textContent);
+        // Display JSON data
+        const jsonDisplaySection = document.getElementById('jsonDisplaySection');
+        const jsonDisplay = document.getElementById('jsonDisplay');
         
-        // Create CSV content
-        const csvContent = [
-            headers.join(','),
-            ...currentData.map(row => row.map(cell => {
-                // Remove HTML tags and replace newlines with spaces for CSV
-                const cleanCell = cell.replace(/<[^>]*>/g, '').replace(/\n/g, ' ');
-                return `"${cleanCell.replace(/"/g, '""')}"`; // Escape quotes in CSV
-            }).join(','))
-        ].join('\n');
+        // Create a clean version of the ads data for JSON display
+        const cleanAdsData = ads.map(ad => {
+            // Create a new object with only the fields we want
+            const cleanAd = {
+                creativeId: ad.creativeId,
+                advertiserName: ad.advertiserName,
+                advertiserId: ad.advertiserId,
+                format: ad.format,
+                duration: ad.duration,
+                impressions: ad.impressions,
+                platforms: ad.platforms,
+                cta: ad.cta,
+                description: ad.description,
+                headlines: ad.headlines,
+                regions: ad.regions,
+                mediaUrls: {
+                    previewUrl: ad.previewUrl || null,
+                    imageUrl: ad.originalItem.previewUrl || null
+                }
+            };
+            return cleanAd;
+        });
 
-        // Create and trigger download
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `google_ads_${new Date().toISOString().split('T')[0]}.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    });
+        // Display the JSON with formatting
+        jsonDisplaySection.style.display = 'block';
+        jsonDisplay.textContent = JSON.stringify(cleanAdsData, null, 2);
+    }
 
     // Format date to readable format
     function formatDate(dateString) {
