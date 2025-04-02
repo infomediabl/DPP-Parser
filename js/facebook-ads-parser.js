@@ -128,28 +128,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Get media content (image or video)
             let mediaContent = '';
-            let originalImageUrl = null;
             const snapshot = ad.originalItem.snapshot;
             
-         // Check in cards first
+            // Check for original image in both locations
+            let originalImageUrl = null;
+            
+            // Check in cards first
             if (snapshot?.cards?.[0]?.original_image_url) {
                 originalImageUrl = snapshot.cards[0].original_image_url;
             }
-
             // Check in images if not found in cards
-                else if(snapshot?.images?.original_image_url) {
-                    originalImageUrl = snapshot.images.original_image_url;
+            else if (snapshot?.images?.original_image_url) {
+                originalImageUrl = snapshot.images.original_image_url;
             }
-
+            
             if (originalImageUrl) {
-                    mediaContent = `<img src="${originalImageUrl}" alt="Ad Image">`;
+                mediaContent = `<img src="${originalImageUrl}" alt="Ad Image">`;
             }
-                
-            // Check for HD video in cards
+            // Check for HD video in cards if no image found
             else if (snapshot?.cards?.[0]?.video_hd_url) {
                 mediaContent = `<video controls><source src="${snapshot.cards[0].video_hd_url}" type="video/mp4">Your browser does not support the video tag.</video>`;
             }
 
+            // Get original image URL if it exists (from either location)
+            const originalImage = originalImageUrl 
+                ? `<div class="original-image"><a href="${originalImageUrl}" target="_blank"><img src="${originalImageUrl}" alt="Original Ad Image"></a></div>`
+                : '';
 
             // Get video HD URL if it exists
             const videoHD = snapshot?.cards?.[0]?.video_hd_url 
@@ -290,4 +294,4 @@ document.addEventListener('DOMContentLoaded', function() {
             tableBody.appendChild(tr);
         });
     }
-}); 
+});
